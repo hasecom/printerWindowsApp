@@ -34,12 +34,11 @@ namespace printerWindowsApp
             p.WaitForExit();
             p.Close();
 
-            MatchCollection matche = Regex.Matches(results, @"プリンター名\s(.*)|ドライバー名\s(.*)|ポート名\s(.*)");
+            MatchCollection matche = Regex.Matches(results, @"プリンター名\s(?<pn>(.*))|ドライバー名\s(?<dn>(.*))|ポート名\s(?<pp>(.*))");
 
             foreach (Match m in matche)
             {
-          
-                Console.WriteLine(m.Value);
+              Console.WriteLine(m.Result("${pn} ${dn} ${pp}"));
             }
 
         }
