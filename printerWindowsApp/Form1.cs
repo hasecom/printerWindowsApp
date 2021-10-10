@@ -37,24 +37,38 @@ namespace printerWindowsApp
             MatchCollection matche = Regex.Matches(results, @"プリンター名\s(?<pn>(.*))|ドライバー名\s(?<dn>(.*))|ポート名\s(?<pp>(.*))");
 
             int i = 0;
-            string printerInfoStr = "";
+            string printer_name = "";
+            string driver_name = "";
+            string printer_port = "";
+
+            List<PrinterList> printerList = new List<PrinterList>();
             foreach (Match m in matche)
             {
                 i++;
-                printerInfoStr += m.Result("${pn}${dn}");
+                printer_name = m.Result("${pn}");
+                driver_name = m.Result("${dn}");
                 if (i % 3 == 0) {
-                    printerInfoStr += m.Result("${pp}");
-                    printerList.Items.Add(printerInfoStr);
-                    printerInfoStr = "";
+                    printer_port = m.Result("${pp}");
+                    
+                        printerList.Add(new PrinterList()
+                        {
+                            PRINTER_NAME = printer_name,
+                            DRIVER_NAME = driver_name,
+                            PRINTER_PORT = printer_port
+                        });
+
+                    printer_name = "";
+                    driver_name = "";
+                    printer_port = "";
                 }
-                
             }
-
+            Debug.WriteLine(printerList);
         }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+    }
+    public class PrinterList
+    {
+        public string PRINTER_NAME { get; set; }
+        public string DRIVER_NAME { get; set; }
+        public string PRINTER_PORT { get; set; }
     }
 }
